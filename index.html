@@ -1,1 +1,61 @@
-<!doctype html><meta charset=utf-8><meta name=robots content='noindex,nofollow'><title>Private</title>
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<title>Четыре варианта</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#f4f1ec;color:#1b1b1b;-webkit-font-smoothing:antialiased}
+  main{max-width:980px;margin:0 auto;padding:40px 16px 56px}
+  h1{font-size:clamp(34px,8vw,56px);line-height:1;letter-spacing:-.03em;margin:0 0 10px}
+  p.lead{margin:0 0 28px;font-size:16px;line-height:1.5;color:#55504a;max-width:560px}
+  ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  a{display:block;text-decoration:none;color:inherit;border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 1px 0 rgba(0,0,0,.08),0 10px 30px rgba(0,0,0,.06);transition:transform .2s}
+  a:hover{transform:translateY(-3px)}
+  .pv{height:170px;display:grid;place-items:center;position:relative;overflow:hidden}
+  .pv b{font-size:44px;line-height:1}
+  .v1 .pv{background:radial-gradient(120% 90% at 50% 10%,#c3cbdc,#2a3a61 75%,#16213f)}
+  .v1 .pv b{background:#fff;color:#16223f;padding:14px 20px;font-family:"Arial Narrow",Impact,sans-serif;font-weight:900;letter-spacing:-.02em;text-transform:uppercase}
+  .v1 .pv i{position:absolute;right:22%;bottom:26px;font:italic 34px Georgia,serif;color:#8e1d2c;transform:rotate(-8deg)}
+  .v2 .pv{background:#0d0d0d}
+  .v2 .pv b{color:#e89bae;font-weight:800;letter-spacing:-.05em;position:relative;z-index:2;margin-top:-56px}
+  .v2 .pv i{position:absolute;left:50%;top:70px;width:130px;height:130px;margin-left:-65px;background:#efe4d6;transform:rotate(-3deg)}
+  .v3 .pv{background:radial-gradient(90% 80% at 50% 40%,#8a1d26,#520b11)}
+  .v3 .pv b{color:#fff;font-family:Georgia,"Times New Roman",serif;text-transform:uppercase;letter-spacing:.02em;font-size:38px}
+  .v4 .pv{background:radial-gradient(80% 90% at 78% 30%,#5a1a27,#1c080d)}
+  .v4 .pv b{color:#d9b36c;font:italic 400 46px Georgia,serif}
+  .tx{padding:18px 20px 20px}
+  .tx strong{display:block;font-size:19px;letter-spacing:-.01em}
+  .tx span{display:block;margin-top:4px;font-size:14px;line-height:1.45;color:#66605a}
+  .tx em{display:inline-block;margin-top:14px;font-style:normal;font-weight:700;font-size:14px;border-bottom:2px solid currentColor}
+  #warn{display:none;margin:0 0 24px;padding:14px 16px;border-radius:12px;background:#fff3cd;font-size:14px;line-height:1.45}
+  footer{margin-top:28px;font-size:13px;color:#7a746d;line-height:1.5}
+</style>
+</head>
+<body>
+<main>
+  <h1>Четыре варианта</h1>
+  <p class="lead">Содержание везде одинаковое, отличается оформление. Открой каждый, полистай до конца и выбери тот, который хочется развивать. Язык переключается вверху страницы: EN, RU, FR.</p>
+  <p id="warn">Ссылка открыта без ключа, поэтому варианты попросят пароль. Открой ссылку целиком, как её прислали.</p>
+  <ul>
+    <li class="v1"><a data-v="navy" href="navy/"><div class="pv"><b>Portfolio</b><i>Portfolio</i></div><div class="tx"><strong>Вариант 1. Синий</strong><span>Белые карточки на синем фоне, огромный сжатый заголовок, рукописный бордовый акцент.</span><em>Открыть</em></div></a></li>
+    <li class="v2"><a data-v="folder" href="folder/"><div class="pv"><i></i><b>Portfolio</b></div><div class="tx"><strong>Вариант 2. Папки и полароид</strong><span>Чёрный экран, бумага со скрепкой, кремовые папки с ярлычками, розовый акцент.</span><em>Открыть</em></div></a></li>
+    <li class="v3"><a data-v="wine" href="wine/"><div class="pv"><b>Portfolio</b></div><div class="tx"><strong>Вариант 3. Бордовый</strong><span>Бордовый экран, ретро-шрифт, белые и бордовые блоки на пыльно-розовом фоне.</span><em>Открыть</em></div></a></li>
+    <li class="v4"><a data-v="classic" href="classic/"><div class="pv"><b>Portfolio</b></div><div class="tx"><strong>Вариант 4. Журнальный</strong><span>Первая версия: спокойная, строгая, с тонким шрифтом и золотым акцентом.</span><em>Открыть</em></div></a></li>
+  </ul>
+  <footer>Закрытая страница. Пожалуйста, не пересылай ссылку дальше.</footer>
+</main>
+<script>
+  (function () {
+    var m = /[#&]k=([A-Za-z0-9_-]+)/.exec(location.hash), saved = null;
+    try { saved = localStorage.getItem('mb-key'); } catch (e) {}
+    var key = (m && m[1]) || saved;
+    if (!key) { document.getElementById('warn').style.display = 'block'; return; }
+    [].forEach.call(document.querySelectorAll('a[data-v]'), function (a) { a.href = a.getAttribute('data-v') + '/#k=' + key; });
+  })();
+</script>
+</body>
+</html>
