@@ -3,7 +3,7 @@
   'use strict';
   var cfg = JSON.parse(document.getElementById('cfg').textContent);
   var $ = function (id) { return document.getElementById(id); };
-  var STORE = 'mb-key';
+  var STORE = 'mb-review-key';
 
   function fromB64(s) {
     s = s.replace(/-/g, '+').replace(/_/g, '/');
@@ -24,12 +24,12 @@
     var b = new Uint8Array(buf);
     return crypto.subtle.decrypt({ name: 'AES-GCM', iv: b.subarray(0, 12) }, key, b.subarray(12));
   }
-  function remember(raw) { try { localStorage.setItem(STORE, toB64url(raw)); } catch (e) {} }
-  function forget() { try { localStorage.removeItem(STORE); } catch (e) {} }
+  function remember(raw) { try { sessionStorage.setItem(STORE, toB64url(raw)); } catch (e) {} }
+  function forget() { try { sessionStorage.removeItem(STORE); } catch (e) {} }
 
   async function start(raw) {
     var key = await importKey(raw);
-    var res = await fetch('a/app.bin');
+    var res = await fetch('a/app.bin?v=20261003');
     if (!res.ok) throw new Error('network');
     var app = JSON.parse(new TextDecoder().decode(await open(key, await res.arrayBuffer())));
     var cache = {};
@@ -50,7 +50,7 @@
         }
         return cache[name];
       },
-      lock: function () { forget(); location.hash = ''; location.reload(); }
+      lock: function () { forget(); location.replace(location.pathname + '?locked=1'); }
     };
     var style = document.createElement('style');
     style.textContent = app.css;
@@ -80,6 +80,7 @@
     if (raw.length !== 32) throw new Error('key');
     await start(raw);
     remember(raw);
+    if (location.hash.includes('k=')) history.replaceState(null, '', location.pathname + location.search);
   }
 
   $('gate-form').addEventListener('submit', async function (e) {
@@ -89,8 +90,10 @@
     $('gate-msg').textContent = '';
     try {
       var raw = await keyFromPassword($('gate-pass').value.trim());
+      $('gate-pass').value = '';
       await start(raw);
       remember(raw);
+    if (location.hash.includes('k=')) history.replaceState(null, '', location.pathname + location.search);
     } catch (err) {
       $('gate-msg').textContent = err && err.message === 'network'
         ? 'Could not load the page. Check the connection and try again.'
@@ -105,7 +108,7 @@
     }
     var m = /[#&]k=([A-Za-z0-9_-]+)/.exec(location.hash);
     var saved = null;
-    try { saved = localStorage.getItem(STORE); } catch (e) {}
+    try { saved = sessionStorage.getItem(STORE); } catch (e) {}
     var candidates = [m && m[1], saved].filter(Boolean);
     if (!candidates.length) return ask();
     $('gate-loading').hidden = false;
