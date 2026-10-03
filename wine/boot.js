@@ -1,7 +1,6 @@
-// Lock screen: gets the content key (from the link or from the password), decrypts the page and starts it.
+// Link-only access: gets the content key from the URL fragment or this tab's session.
 (function () {
   'use strict';
-  var cfg = JSON.parse(document.getElementById('cfg').textContent);
   var $ = function (id) { return document.getElementById(id); };
   var STORE = 'mb-review-key';
 
@@ -29,7 +28,7 @@
 
   async function start(raw) {
     var key = await importKey(raw);
-    var res = await fetch('a/app.bin?v=20261003');
+    var res = await fetch('a/app.bin?v=20261003b');
     if (!res.ok) throw new Error('network');
     var app = JSON.parse(new TextDecoder().decode(await open(key, await res.arrayBuffer())));
     var cache = {};
@@ -60,19 +59,11 @@
     document.body.appendChild(script);
   }
 
-  async function keyFromPassword(pass) {
-    var base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey']);
-    var kek = await crypto.subtle.deriveKey(
-      { name: 'PBKDF2', hash: 'SHA-256', salt: fromB64(cfg.salt), iterations: cfg.iter },
-      base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
-    return new Uint8Array(await open(kek, fromB64(cfg.wrapped)));
-  }
-
   function ask(msg) {
     $('gate-loading').hidden = true;
     $('gate-ask').hidden = false;
     $('gate-msg').textContent = msg || '';
-    $('gate-pass').focus();
+    $('gate-title').focus();
   }
 
   async function tryKey(text) {
@@ -83,25 +74,6 @@
     if (location.hash.includes('k=')) history.replaceState(null, '', location.pathname + location.search);
   }
 
-  $('gate-form').addEventListener('submit', async function (e) {
-    e.preventDefault();
-    var btn = $('gate-btn');
-    btn.disabled = true;
-    $('gate-msg').textContent = '';
-    try {
-      var raw = await keyFromPassword($('gate-pass').value.trim());
-      $('gate-pass').value = '';
-      await start(raw);
-      remember(raw);
-    if (location.hash.includes('k=')) history.replaceState(null, '', location.pathname + location.search);
-    } catch (err) {
-      $('gate-msg').textContent = err && err.message === 'network'
-        ? 'Could not load the page. Check the connection and try again.'
-        : 'The password does not match. Please try again.';
-      btn.disabled = false;
-    }
-  });
-
   (async function () {
     if (!window.crypto || !crypto.subtle) {
       return ask('This browser cannot open the page. Please use a current browser over https.');
@@ -110,12 +82,12 @@
     var saved = null;
     try { saved = sessionStorage.getItem(STORE); } catch (e) {}
     var candidates = [m && m[1], saved].filter(Boolean);
-    if (!candidates.length) return ask();
+    if (!candidates.length) return ask('Откройте полную приватную ссылку, которую вам прислали. · Open the complete private link you received.');
     $('gate-loading').hidden = false;
     for (var i = 0; i < candidates.length; i++) {
       try { await tryKey(candidates[i]); return; } catch (e) {}
     }
     forget();
-    ask(m ? 'This link is no longer valid. Enter the password instead.' : '');
+    ask(m ? 'Ссылка недействительна или повреждена. Попросите новую полную ссылку. · This link is invalid or incomplete.' : '');
   })();
 })();

@@ -14,19 +14,13 @@
 <style>
   html,body{margin:0;height:100%}
   body{background:#1c080d;color:#f4ece1;font-family:Manrope,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-  #gate{min-height:100%;display:grid;place-items:center;padding:24px;box-sizing:border-box;
-    background:radial-gradient(90% 70% at 50% 0%,#4a1420 0%,#1c080d 70%)}
+  #gate{min-height:100%;display:grid;place-items:center;padding:24px;box-sizing:border-box;background:radial-gradient(90% 70% at 50% 0%,#4a1420 0%,#1c080d 70%)}
   #gate[hidden]{display:none}
-  .gate-card{width:100%;max-width:400px;text-align:center}
+  .gate-card{width:100%;max-width:440px;text-align:center}
   .gate-mark{font-family:"Cormorant Garamond",Georgia,serif;font-size:64px;line-height:1;letter-spacing:.04em;font-style:italic;color:#d9b36c}
-  .gate-title{font-family:"Cormorant Garamond",Georgia,serif;font-size:30px;font-weight:500;margin:18px 0 6px}
-  .gate-sub{font-size:14px;line-height:1.6;color:#cdb9b3;margin:0 0 26px}
-  .gate-form{display:flex;gap:8px}
-  .gate-form input{flex:1;min-width:0;font:inherit;font-size:16px;padding:13px 16px;border-radius:999px;border:1px solid #6d3a44;background:#2a0d14;color:#f4ece1;outline:none}
-  .gate-form input:focus{border-color:#d9b36c}
-  .gate-form button{font:inherit;font-weight:600;font-size:15px;padding:13px 22px;border-radius:999px;border:0;background:#d9b36c;color:#1c080d;cursor:pointer}
-  .gate-form button:disabled{opacity:.6;cursor:progress}
-  .gate-msg{min-height:22px;margin-top:14px;font-size:14px;color:#f0a39a}
+  .gate-title{font-family:"Cormorant Garamond",Georgia,serif;font-size:30px;font-weight:500;margin:18px 0 6px;outline:0}
+  .gate-sub{font-size:14px;line-height:1.6;color:#cdb9b3;margin:0}
+  .gate-msg{min-height:22px;margin-top:14px;font-size:14px;line-height:1.6;color:#f0a39a}
   .gate-load{font-size:14px;color:#cdb9b3;letter-spacing:.08em;text-transform:uppercase}
 </style>
 </head>
@@ -36,19 +30,15 @@
     <div class="gate-mark" aria-hidden="true">MB</div>
     <div id="gate-loading" class="gate-load" hidden>Opening…</div>
     <div id="gate-ask" hidden>
-      <h1 class="gate-title">Private portfolio</h1>
-      <p class="gate-sub">Enter the password you were given.<br>Введите пароль · Saisissez le mot de passe</p>
-      <form class="gate-form" id="gate-form" autocomplete="off">
-        <input id="gate-pass" type="password" aria-label="Password" placeholder="Password" required>
-        <button id="gate-btn" type="submit">Open</button>
-      </form>
+      <h1 class="gate-title" id="gate-title" tabindex="-1">Private portfolio</h1>
+      <p class="gate-sub">Доступ только по полной приватной ссылке.<br>Access is available through the complete private link.</p>
       <div class="gate-msg" id="gate-msg" role="alert"></div>
     </div>
     <noscript><p class="gate-sub">This page needs JavaScript to open.</p></noscript>
   </div>
 </div>
 <div id="app" hidden></div>
-<script type="application/json" id="cfg">{"salt": "tIBjCAZYJYX5kL5WDY48HQ==", "iter": 600000, "wrapped": "TKUbxxNQaOjFpg5jMfXd5aO+bh+9x+DmgKFnpwLjGgbjf+HB/MfGOfv7w6MmyAqKiXanpB3XCLZDrcii"}</script>
-<script src="boot.js?v=20261003"></script>
+<script type="application/json" id="cfg">{}</script>
+<script src="boot.js?v=20261003b"></script>
 </body>
 </html>
